@@ -1,0 +1,1 @@
+current/scripts/MakefileWithCurrentBuild

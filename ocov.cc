@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
           }
         }
         std::sort(std::begin(markers), std::end(markers));
-        std::pair<uint32_t, bool> key;
+        std::pair<uint32_t, bool> key(0u, false);
         size_t index = 0u;
         bool status[2] = {false, false};
         current::FileSystem::ReadFileByLines(filename, [&key, &index, &markers, &status](std::string const& loc) {

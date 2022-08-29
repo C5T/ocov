@@ -1,6 +1,6 @@
 # `ocov`
 
-Colors `opa test --coverage` reports in the terminal.
+The `ocov` tool, short for `OPA Coverage Report`, colors into green and red the covered / not covered lines of the Rego policies, as output by `opa test --coverage`.
 
 ## Build
 
@@ -18,7 +18,7 @@ Copy `.current/ocov` somewhere into your `$PATH`. The following command does the
 sudo cp .current/ocov /usr/local/bin/
 ```
 
-## Usage
+## Use
 
 Either:
 
@@ -36,7 +36,7 @@ ocov --input coverage.json
 There are also:
 
 ```
-ocov --version  # Or ocov -c
+ocov --version  # Or ocov -v
 ```
 
 And:

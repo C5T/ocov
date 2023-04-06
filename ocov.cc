@@ -64,9 +64,13 @@ CURRENT_STRUCT(OCOVFile) {
   CURRENT_FIELD(coverage, Optional<double>);
 };
 
-CURRENT_STRUCT(OCOV) {
+CURRENT_STRUCT(OPATestInput) {
   CURRENT_FIELD(files, (std::map<std::string, OCOVFile>));
   CURRENT_FIELD(coverage, Optional<double>);
+};
+
+CURRENT_STRUCT(OPAEvalInput) {
+  CURRENT_FIELD(coverage, OPATestInput);
 };
 
 int main(int argc, char** argv) {
@@ -77,7 +81,19 @@ int main(int argc, char** argv) {
   }
 
   try {
-    OCOV const ocov = ParseJSON<OCOV, JSONFormat::Minimalistic>(ReadInput());
+    OPATestInput const ocov = [&]() {
+      std::string const input = ReadInput();
+      auto as_test_input = TryParseJSON<OPATestInput, JSONFormat::Minimalistic>(input);
+      if (Exists(as_test_input)) {
+        return Value(as_test_input);
+      }
+      auto as_eval_input = TryParseJSON<OPAEvalInput, JSONFormat::Minimalistic>(input);
+      if (Exists(as_eval_input)) {
+        return Value(as_eval_input).coverage;
+      }
+      std::cerr << red << bold << "The input should be from `opa test` or from `opa eval`." << reset << std::endl;
+      std::exit(1);
+    }();
     bool first = true;
     for (auto const& file : ocov.files) {
       if (!first) {
